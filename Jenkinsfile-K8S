@@ -1,1 +1,24 @@
+pipeline {
+    agent any
+       tools {
+        maven 'Maven3'
+    }
+    environment {
+        registry = "public.ecr.aws/c9x6d1e3/my-docker-repo"
+    }
 
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RutujaPawal/-springboot-app.git']]])
+            }
+        }
+        stage ("Build image") {
+            steps {
+                script {
+                    docker.build registry
+                }
+            }
+        }
+    }       
+}
