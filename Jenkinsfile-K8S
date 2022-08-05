@@ -3,10 +3,6 @@ pipeline {
        tools {
         maven 'Maven3'
     }
-    environment {
-        registry = "public.ecr.aws/c9x6d1e3/my-docker-repo"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -17,14 +13,6 @@ pipeline {
         stage ('Build') {
           steps {
             sh 'mvn clean install'           
-            }
-      }
-      
-        stage ("Build image") {
-            steps {
-                script {
-                    docker.build registry
-                }
             }
         }
     }       
