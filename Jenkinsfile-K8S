@@ -4,9 +4,6 @@ pipeline {
        tools {
         maven 'Maven3'
     }
-        environment {
-        registry = "public.ecr.aws/c9x6d1e3/docker-image"
-    }
     stages {
         stage ('Build Project') {
           steps {
