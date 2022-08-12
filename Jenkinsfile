@@ -32,7 +32,7 @@ pipeline {
         stage ("Build image") {
            steps {
               script {
-                  kube-deploy()
+                  kube_deploy()
                 }
             }
         }
