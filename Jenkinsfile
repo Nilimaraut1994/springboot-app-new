@@ -10,9 +10,9 @@ pipeline {
     stages {
         stage ('Build Project') {
           steps {
-              script{  
+              script{
                   java_build()
-                }  
+                }
             }
         }
         stage ("Build image") {
