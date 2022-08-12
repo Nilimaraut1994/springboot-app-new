@@ -1,3 +1,4 @@
+@Library('My-Jenkins-SharedLibrary') _
 pipeline {
     agent any
        tools {
@@ -7,38 +8,11 @@ pipeline {
         registry = "public.ecr.aws/c9x6d1e3/docker-image"
     }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RutujaPawal/springboot-app-new.git']]])
-            }
-        }
-
         stage ('Build Project') {
           steps {
-            sh 'mvn clean install'           
+              script{  
+                  java_build()
+                }  
             }
-        }
-         stage ("Build image") {
-            steps {
-                script {
-                    docker.build registry
-                }
-            }
-        }       
-         stage ("docker push") {
-            steps {
-                script {
-                    sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c9x6d1e3"
-                    sh "docker push public.ecr.aws/c9x6d1e3/docker-image:latest"    
-                   }
-                }   
-           }
-         stage ("Kube Deploy") {
-            steps {
-                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
-                 sh "kubectl apply -f eks-deploy-k8s.yaml"
-                }
-            } 
-         }      
-     }       
+        }     
 }
