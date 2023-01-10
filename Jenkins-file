@@ -1,0 +1,15 @@
+pipeline {
+    agent any
+    stages{
+        stage("git"){
+        steps{
+            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Nilimaraut1994/springboot-app-new.git']])
+          }
+        }  
+        stage("build"){
+            steps{
+                sh 'package'
+            }
+        }
+   }
+}
